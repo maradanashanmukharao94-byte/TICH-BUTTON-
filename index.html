@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tich Button - Local Restaurant Delivery</title>
+  <title>Tich Button - Padinjarathara Restaurants Delivery</title>
   <style>
     :root { --primary: #176b3a; --bg: #f5f7f4; --text: #172019; --accent: #eef7f2; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 20px; }
@@ -15,19 +15,19 @@
     .box { background: white; padding: 12px; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
     .section-title { font-size: 15px; font-weight: bold; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
     
-    /* RESTAURANT CARDS (SWIGGY STYLE) */
+    /* RESTAURANT CARDS */
     .res-card { background: white; border-radius: 12px; padding: 12px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #eee; cursor: pointer; display: flex; gap: 12px; align-items: center; transition: transform 0.1s; }
     .res-card:active { transform: scale(0.98); }
-    .res-icon { font-size: 38px; background: var(--accent); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0; }
+    .res-icon { font-size: 34px; background: var(--accent); width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0; }
     .res-info { flex-grow: 1; }
-    .res-name { font-size: 15px; font-weight: bold; margin-bottom: 2px; }
-    .res-tags { font-size: 12px; color: #666; margin-bottom: 6px; }
+    .res-name { font-size: 14px; font-weight: bold; margin-bottom: 2px; }
+    .res-tags { font-size: 11px; color: #666; margin-bottom: 4px; }
     .res-meta { display: flex; gap: 10px; font-size: 11px; font-weight: bold; }
     .res-badge { background: #e8f5e9; color: #2e7d32; padding: 2px 6px; border-radius: 4px; }
     
     /* MENU & BANNER */
     .res-banner { background: var(--accent); padding: 10px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #c8e6c9; }
-    .back-btn { background: var(--primary); color: white; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; }
+    .back-btn { background: var(--primary); color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; }
     
     .search { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box; }
     .categories { display: flex; gap: 6px; overflow-x: auto; padding: 6px 0; margin-bottom: 6px; }
@@ -41,7 +41,7 @@
     .product-price { color: #555; font-size: 12px; font-weight: bold; margin-bottom: 6px; }
     .btn-add { background: var(--primary); color: white; border: none; padding: 6px; border-radius: 5px; font-weight: bold; cursor: pointer; width: 100%; font-size: 12px; }
     
-    /* COMPACT CART */
+    /* CART */
     .cart-box { position: sticky; bottom: 4px; z-index: 10; border: 2px solid var(--primary); padding: 10px; margin-bottom: 0; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
     .cart-box h2 { margin: 0 0 6px 0; font-size: 15px; }
     #cart { max-height: 100px; overflow-y: auto; padding-right: 4px; }
@@ -58,20 +58,20 @@
 
 <header>
   <h1>🛵 Tich Button</h1>
-  <p>📍 Delivering from local restaurants in Padinjarathara</p>
+  <p>📍 All Padinjarathara Restaurants in One App</p>
 </header>
 
 <main>
-  <!-- VIEW 1: RESTAURANT LIST -->
+  <!-- RESTAURANTS SELECTION -->
   <div id="restaurant-view">
     <div class="section-title">
-      <span>Restaurants near Padinjarathara</span>
+      <span>Restaurants in Padinjarathara</span>
       <span class="muted" style="font-size: 11px;">Within 5 km</span>
     </div>
     <div id="restaurant-list"></div>
   </div>
 
-  <!-- VIEW 2: MENU VIEW (HIDDEN INITIALLY) -->
+  <!-- MENU VIEW -->
   <div id="menu-view" style="display: none;">
     <div class="res-banner">
       <div>
@@ -82,14 +82,14 @@
     </div>
 
     <div class="box">
-      <input id="search" class="search" placeholder="Search food, shawarma, biriyani..." oninput="renderProducts()">
+      <input id="search" class="search" placeholder="Search menu items..." oninput="renderProducts()">
       <div class="categories" id="categories"></div>
     </div>
 
     <div id="products" class="grid"></div>
   </div>
 
-  <!-- STICKY CART -->
+  <!-- CART -->
   <div class="box cart-box">
     <h2>🛒 Cart</h2>
     <div id="cart"></div>
@@ -116,58 +116,83 @@
 </main>
 
 <script>
-// RESTAURANTS LIST
+// ALL PADINJARATHARA RESTAURANTS
 const restaurants = [
-  { id: "food-lounge", name: "New Food Lounge Restaurant & Bakery", tags: "Arabian, Biriyani, Chinese, Desserts", time: "20–30 min", rating: "4.5 ⭐", icon: "🍛" },
-  { id: "tich-bakery", name: "Tich Bakery & Snacks", tags: "Tea, Snacks, Puffs, Juices", time: "15–20 min", rating: "4.6 ⭐", icon: "🧁" },
-  { id: "padinjarathara-cafe", name: "Padinjarathara Cool Bar", tags: "Mojitos, Shakes, Falooda, Ice Cream", time: "15–25 min", rating: "4.4 ⭐", icon: "🥤" }
+  { id: "food-lounge", name: "New Food Lounge Restaurant & Bakery", tags: "Arabian, Biriyani, Mandhi, Chinese, Bakery", time: "20–30 min", rating: "4.5 ⭐", icon: "🍛" },
+  { id: "malabar-hotel", name: "Malabar Hotel & Restaurant", tags: "Kerala Meals, Porotta, Beef Fry, Chicken Curry", time: "15–25 min", rating: "4.4 ⭐", icon: "🍲" },
+  { id: "banasura-view", name: "Banasura Family Restaurant", tags: "Al Faham, Kebabs, Biriyani, North Indian", time: "25–35 min", rating: "4.3 ⭐", icon: "🍗" },
+  { id: "calicut-hotel", name: "Calicut Hotel & Seafood", tags: "Fish Curry Meals, Beef Roast, Porotta, Snacks", time: "15–20 min", rating: "4.2 ⭐", icon: "🐟" },
+  { id: "green-leaf", name: "Green Leaf Pure Veg Hotel", tags: "Sambar Rice, Dosa, Idli, Poori, Veg Meals", time: "15–25 min", rating: "4.5 ⭐", icon: "🥦" },
+  { id: "tich-bakery", name: "Tich Bakery & Snacks", tags: "Puffs, Rolls, Unnakkaya, Cakes, Tea & Coffee", time: "10–15 min", rating: "4.6 ⭐", icon: "🧁" },
+  { id: "cool-bar", name: "Padinjarathara Cool Bar", tags: "Fresh Juices, Sharjah Shake, Falooda, Mojitos", time: "10–15 min", rating: "4.4 ⭐", icon: "🥤" }
 ];
 
-// PRODUCTS LIST (Linked by Restaurant ID)
+// MENU ITEMS LINKED TO RESTAURANTS
 const products = [
-  // New Food Lounge Restaurant Items
+  // 1. New Food Lounge
   ["Al Faham Normal (Quarter)", "Arabian", 180, "🍗", "food-lounge"],
-  ["Al Faham Normal (Half)", "Arabian", 290, "🍗", "food-lounge"],
-  ["Al Faham Normal (Full)", "Arabian", 520, "🍗", "food-lounge"],
   ["Pepper Al Faham (Quarter)", "Arabian", 190, "🍗", "food-lounge"],
   ["Shawarma Roll", "Arabian", 90, "🌯", "food-lounge"],
-  ["Shawarma Plate", "Arabian", 120, "🍽️", "food-lounge"],
   ["Chicken Biriyani", "Biriyani", 190, "🍗", "food-lounge"],
-  ["Egg Biriyani", "Biriyani", 150, "🥚", "food-lounge"],
-  ["Veg Biriyani", "Biriyani", 140, "🥦", "food-lounge"],
-  ["Manthi Normal (Quarter)", "Manthi", 220, "🍛", "food-lounge"],
   ["Al Faham Manthi (Quarter)", "Manthi", 240, "🍛", "food-lounge"],
   ["Chicken Noodles", "Chinese", 190, "🍜", "food-lounge"],
   ["Chicken Fried Rice", "Chinese", 190, "🍚", "food-lounge"],
-  ["Chilli Chicken (Half)", "Curries", 200, "🍗", "food-lounge"],
   ["Porotta", "Breads", 15, "🥞", "food-lounge"],
-  ["Chapathi", "Breads", 14, "🫓", "food-lounge"],
 
-  // Tich Bakery & Snacks
+  // 2. Malabar Hotel
+  ["Kerala Fish Meals", "Meals", 100, "🍛", "malabar-hotel"],
+  ["Chicken Curry", "Curries", 140, "🍗", "malabar-hotel"],
+  ["Beef Fry / Roast", "Curries", 160, "🥩", "malabar-hotel"],
+  ["Malabar Parotta", "Breads", 12, "🥞", "malabar-hotel"],
+  ["Chicken Biriyani", "Biriyani", 160, "🍗", "malabar-hotel"],
+  ["Ghee Rice & Beef", "Combo", 220, "🍚", "malabar-hotel"],
+
+  // 3. Banasura Family Restaurant
+  ["Peri Peri Al Faham (Half)", "Arabian", 310, "🍗", "banasura-view"],
+  ["Chicken Tikka", "Starters", 220, "🍢", "banasura-view"],
+  ["Butter Chicken", "Curries", 220, "🍗", "banasura-view"],
+  ["Butter Naan", "Breads", 40, "🫓", "banasura-view"],
+  ["Chicken Dum Biriyani", "Biriyani", 200, "🍗", "banasura-view"],
+  ["Paneer Butter Masala", "Curries", 190, "🧀", "banasura-view"],
+
+  // 4. Calicut Hotel & Seafood
+  ["Nadan Fish Curry Meals", "Meals", 110, "🐟", "calicut-hotel"],
+  ["Fish Fry (King Fish/Ayala)", "Seafood", 150, "🐟", "calicut-hotel"],
+  ["Beef Roast", "Curries", 150, "🥩", "calicut-hotel"],
+  ["Egg Roast", "Curries", 70, "🥚", "calicut-hotel"],
+  ["Coin Porotta (Set of 5)", "Breads", 60, "🥞", "calicut-hotel"],
+
+  // 5. Green Leaf Pure Veg Hotel
+  ["South Indian Veg Meals", "Meals", 90, "🥦", "green-leaf"],
+  ["Masala Dosa", "Tiffin", 80, "🥞", "green-leaf"],
+  ["Ghee Roast Dosa", "Tiffin", 90, "🥞", "green-leaf"],
+  ["Idli Sambar (2 pcs)", "Tiffin", 40, "⚪", "green-leaf"],
+  ["Poori Masala", "Tiffin", 60, "🫓", "green-leaf"],
+  ["Paneer Biriyani", "Biriyani", 180, "🧀", "green-leaf"],
+
+  // 6. Tich Bakery & Snacks
   ["Chicken Puffs", "Snacks", 25, "🥐", "tich-bakery"],
   ["Egg Puffs", "Snacks", 20, "🥐", "tich-bakery"],
   ["Veg Puffs", "Snacks", 16, "🥐", "tich-bakery"],
-  ["Chicken Roll", "Snacks", 20, "🥖", "tich-bakery"],
   ["Unnakkaya", "Snacks", 20, "🍌", "tich-bakery"],
   ["Pazham Pori", "Snacks", 12, "🍌", "tich-bakery"],
-  ["Black Tea", "Beverages", 10, "☕", "tich-bakery"],
-  ["Milk Tea", "Beverages", 14, "☕", "tich-bakery"],
+  ["Chicken Roll", "Snacks", 20, "🥖", "tich-bakery"],
+  ["Hot Tea", "Beverages", 12, "☕", "tich-bakery"],
   ["Coffee", "Beverages", 15, "☕", "tich-bakery"],
 
-  // Padinjarathara Cool Bar
-  ["Fresh Lime", "Drinks", 20, "🍋", "padinjarathara-cafe"],
-  ["Mint Lime", "Drinks", 30, "🍃", "padinjarathara-cafe"],
-  ["Watermelon Juice", "Drinks", 60, "🍉", "padinjarathara-cafe"],
-  ["Sharjah Shake", "Shakes", 80, "🥤", "padinjarathara-cafe"],
-  ["Normal Falooda", "Desserts", 120, "🍨", "padinjarathara-cafe"],
-  ["Royal Falooda", "Desserts", 140, "🍨", "padinjarathara-cafe"]
+  // 7. Padinjarathara Cool Bar
+  ["Fresh Lime", "Drinks", 20, "🍋", "cool-bar"],
+  ["Mint Lime", "Drinks", 30, "🍃", "cool-bar"],
+  ["Sharjah Shake", "Shakes", 80, "🥤", "cool-bar"],
+  ["Mango Shake", "Shakes", 90, "🥭", "cool-bar"],
+  ["Royal Falooda", "Desserts", 140, "🍨", "cool-bar"],
+  ["Blue Tender Coconut Mojito", "Drinks", 80, "🍹", "cool-bar"]
 ];
 
 let selectedResId = null;
 let selectedCategory = "All";
 let cart = {};
 
-// RENDER RESTAURANTS LIST
 function renderRestaurants() {
   document.getElementById('restaurant-list').innerHTML = restaurants.map(r => `
     <div class="res-card" onclick="selectRestaurant('${r.id}')">
@@ -184,7 +209,6 @@ function renderRestaurants() {
   `).join('');
 }
 
-// SELECT A RESTAURANT
 function selectRestaurant(resId) {
   selectedResId = resId;
   const res = restaurants.find(r => r.id === resId);
@@ -345,7 +369,6 @@ Please confirm my order and share estimated delivery time!`;
   window.open(`https://wa.me/919392896113?text=${encodedMsg}`, '_blank');
 }
 
-// INITIALIZE
 renderRestaurants();
 drawCart();
 </script>
