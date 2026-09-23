@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tich Button - Local Delivery</title>
+  <title>Tich Button - Food Lounge Delivery</title>
   <style>
     :root { --primary: #176b3a; --bg: #f5f7f4; --text: #172019; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 30px; }
@@ -41,7 +41,7 @@
 
 <main>
   <div class="box">
-    <input id="search" class="search" placeholder="Search items..." oninput="renderProducts()">
+    <input id="search" class="search" placeholder="Search food, shawarma, biriyani..." oninput="renderProducts()">
     <div class="categories" id="categories"></div>
   </div>
 
@@ -75,21 +75,113 @@
 
 <script>
 const products = [
-  ["Rice 5 kg", "Groceries", 320, "🍚"],
-  ["Milk 1 L", "Groceries", 65, "🥛"],
-  ["Eggs 6", "Groceries", 48, "🥚"],
-  ["Banana 1 kg", "Fruits", 55, "🍌"],
-  ["Apple 1 kg", "Fruits", 160, "🍎"],
-  ["Chips", "Snacks", 30, "🥔"],
-  ["Biscuits", "Snacks", 20, "🍪"],
-  ["Tea", "Food", 15, "☕"],
-  ["Meals", "Food", 100, "🍛"],
-  ["Biriyani", "Food", 150, "🍗"],
-  ["Parotta", "Food", 15, "🥞"],
-  ["Chicken Curry", "Food", 140, "🍗"],
-  ["Toothpaste", "Household", 75, "🪥"],
-  ["Soap", "Household", 45, "🧼"],
-  ["Shawarma", "Food", 120,"🌯"]
+  // Arabian & Shawarma
+  ["Al Faham Normal (Quarter)", "Arabian", 180, "🍗"],
+  ["Al Faham Normal (Half)", "Arabian", 290, "🍗"],
+  ["Al Faham Normal (Full)", "Arabian", 520, "🍗"],
+  ["Pepper Al Faham (Quarter)", "Arabian", 190, "🍗"],
+  ["Pepper Al Faham (Half)", "Arabian", 320, "🍗"],
+  ["Pepper Al Faham (Full)", "Arabian", 560, "🍗"],
+  ["Arabic Al Faham (Quarter)", "Arabian", 190, "🍗"],
+  ["Honey Al Faham (Quarter)", "Arabian", 190, "🍗"],
+  ["Peri Peri Al Faham (Quarter)", "Arabian", 190, "🍗"],
+  ["Shawarma Roll", "Arabian", 90, "🌯"],
+  ["Shawarma Plate", "Arabian", 120, "🍽️"],
+  ["Full Meat Roll", "Arabian", 140, "🌯"],
+  ["Full Meat Plate", "Arabian", 160, "🍽️"],
+  ["Porotta Roll", "Arabian", 120, "🌯"],
+  ["Porotta Plate", "Arabian", 180, "🍽️"],
+
+  // Manthi
+  ["Manthi Normal (Quarter)", "Manthi", 220, "🍛"],
+  ["Manthi Normal (Half)", "Manthi", 430, "🍛"],
+  ["Manthi Normal (Full)", "Manthi", 850, "🍛"],
+  ["Al Faham Manthi (Quarter)", "Manthi", 240, "🍛"],
+  ["Al Faham Manthi (Half)", "Manthi", 470, "🍛"],
+  ["Al Faham Manthi (Full)", "Manthi", 930, "🍛"],
+  ["Peri Peri Al Faham Manthi (Quarter)", "Manthi", 280, "🍛"],
+  ["Manthi Rice Only", "Manthi", 100, "🍚"],
+
+  // Rice & Biriyani
+  ["Chicken Biriyani", "Biriyani", 190, "🍗"],
+  ["Egg Biriyani", "Biriyani", 150, "🥚"],
+  ["Veg Biriyani", "Biriyani", 140, "🥦"],
+  ["Mushroom Biriyani", "Biriyani", 260, "🍄"],
+  ["Paneer Biriyani", "Biriyani", 250, "🧀"],
+  ["Jeera Rice", "Biriyani", 140, "🍚"],
+  ["Biriyani Rice", "Biriyani", 120, "🍚"],
+  ["Ghee Rice", "Biriyani", 110, "🍚"],
+  ["Ghee Rice (Half)", "Biriyani", 90, "🍚"],
+  ["Meals", "Biriyani", 80, "🍛"],
+  ["Curd Rice", "Biriyani", 130, "🥣"],
+
+  // Chinese & Noodles
+  ["Veg Noodles", "Chinese", 140, "🍜"],
+  ["Egg Noodles", "Chinese", 160, "🍜"],
+  ["Chicken Noodles", "Chinese", 190, "🍜"],
+  ["Mixed Noodles", "Chinese", 220, "🍜"],
+  ["Schezwan Chicken Noodles", "Chinese", 240, "🍜"],
+  ["Veg Fried Rice", "Chinese", 150, "🍚"],
+  ["Egg Fried Rice", "Chinese", 160, "🍚"],
+  ["Chicken Fried Rice", "Chinese", 190, "🍚"],
+  ["Mixed Fried Rice", "Chinese", 220, "🍚"],
+  ["Schezwan Chicken Fried Rice", "Chinese", 240, "🍚"],
+
+  // Curries & Dishes
+  ["Chilli Chicken (Half)", "Curries", 200, "🍗"],
+  ["Chilli Chicken (Full)", "Curries", 290, "🍗"],
+  ["Pepper Chicken (Half)", "Curries", 220, "🍗"],
+  ["Butter Chicken (Half)", "Curries", 200, "🍗"],
+  ["Chicken Masala (Half)", "Curries", 200, "🍗"],
+  ["Chicken Curry (Half)", "Curries", 180, "🍗"],
+  ["Chicken 65 (Half)", "Curries", 190, "🍗"],
+  ["Egg Masala", "Curries", 100, "🥚"],
+  ["Egg Roast", "Curries", 100, "🥚"],
+  ["Egg Burji", "Curries", 100, "🍳"],
+  ["Omelette", "Curries", 50, "🍳"],
+  ["Gobi Manchurian Dry", "Curries", 190, "🥦"],
+  ["Gobi Chilly", "Curries", 190, "🥦"],
+  ["Paneer Butter Masala", "Curries", 220, "🧀"],
+  ["Kadai Paneer", "Curries", 220, "🧀"],
+  ["Veg Kuruma", "Curries", 100, "🥗"],
+
+  // Breads
+  ["Porotta", "Breads", 15, "🥞"],
+  ["Wheat Porotta", "Breads", 20, "🥞"],
+  ["Nool Porotta", "Breads", 20, "🥞"],
+  ["Chapathi", "Breads", 14, "🫓"],
+  ["Kubz", "Breads", 10, "🫓"],
+  ["Tandoor Rotti", "Breads", 20, "🫓"],
+  ["Butter Naan", "Breads", 40, "🫓"],
+
+  // Fast Food & Snacks
+  ["Veg Burger", "Fast Food", 70, "🍔"],
+  ["Chicken Burger", "Fast Food", 90, "🍔"],
+  ["Chicken Cheese Burger", "Fast Food", 100, "🍔"],
+  ["Veg Sandwich", "Fast Food", 50, "🥪"],
+  ["Chicken Sandwich", "Fast Food", 60, "🥪"],
+  ["Chicken Puffs", "Snacks", 25, "🥐"],
+  ["Egg Puffs", "Snacks", 20, "🥐"],
+  ["Veg Puffs", "Snacks", 16, "🥐"],
+  ["Chicken Roll", "Snacks", 20, "🥖"],
+  ["Unnakkaya", "Snacks", 20, "🍌"],
+  ["Macaroni Pola", "Snacks", 30, "🥮"],
+  ["Kilikoodu", "Snacks", 25, "🧆"],
+  ["Pazham Nirachath", "Snacks", 25, "🍌"],
+  ["Pazham Pori", "Snacks", 12, "🍌"],
+
+  // Beverages & Desserts
+  ["Black Tea", "Beverages", 10, "☕"],
+  ["Tea", "Beverages", 14, "☕"],
+  ["Coffee", "Beverages", 15, "☕"],
+  ["Fresh Lime", "Beverages", 20, "🍋"],
+  ["Mint Lime", "Beverages", 30, "🍃"],
+  ["Watermelon Juice", "Beverages", 60, "🍉"],
+  ["Anar Juice", "Beverages", 80, "🧃"],
+  ["Orange Juice", "Beverages", 60, "🍊"],
+  ["Sharjah Shake", "Beverages", 80, "🥤"],
+  ["Normal Falooda", "Beverages", 120, "🍨"],
+  ["Royal Falooda", "Beverages", 140, "🍨"]
 ];
 
 let selectedCategory = "All";
@@ -221,7 +313,6 @@ Please confirm my order and share estimated delivery time!`;
   window.open(`https://wa.me/919392896113?text=${encodedMsg}`, '_blank');
 }
 
-// Initialize on page load
 initCategories();
 renderProducts();
 drawCart();
